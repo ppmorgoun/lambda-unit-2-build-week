@@ -1,0 +1,25 @@
+Baseline model 
+(predicting mean house price for every house)
+ - RMSE 87605
+
+Baseline simple linear regression:
+RMSE = 34874
+
+Simple random forest model
+TRAIN RMSE = 12487
+RMSE = 30224
+
+RF with features engineering:
+ - some aggregate features (e.g. total square footage)
+ - has_feature for various features
+ Train rmse = 11227
+ Val rmse = 23922
+
+RF with engineered features and permutation features < 0 removed
+ Train rmse = 12181
+ Val rmse = 30386
+
++ hyper parameter tuning (all features)
+{'randomforestregressor__max_depth': 20, 'randomforestregressor__max_features': 0.575787431540977, 'randomforestregressor__n_estimators': 200}
+ Train rmse = 11335
+ Val rmse = 22514
