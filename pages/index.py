@@ -5,6 +5,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
+import pandas as pd
+from pathlib import Path
 
 # Imports from this application
 from app import app
@@ -16,29 +18,58 @@ column1 = dbc.Col(
         dcc.Markdown(
             """
         
-            ## Your Value Proposition
+            ## Welcome to my house pricing app!
 
-            Emphasize how the app will benefit users. Don't emphasize the underlying technology.
-
-            ✅ RUN is a running app that adapts to your fitness levels and designs personalized workouts to help you improve your running.
-
-            ❌ RUN is the only intelligent running app that uses sophisticated deep neural net machine learning to make your run smarter because we believe in ML driven workouts.
+            For all your house pricing needs (as long as you live in Ames, Iowa)
 
             """
         ),
-        dcc.Link(dbc.Button('Your Call To Action', color='primary'), href='/predictions')
+
+        #dcc.Link(hred = 'https://github.com/ppmorgoun/lambda-unit-2-build-week'),
+
+        dcc.Link(dbc.Button('Predict my house!', color='primary'), href='/predictions'),
+
+        dcc.Markdown(
+            """
+        
+
+        
+            See the source code here:
+
+            """
+        ),
+
+        dcc.Link(dbc.Button('Github', color='primary'), href='https://github.com/ppmorgoun/lambda-unit-2-build-week')
     ],
     md=4,
 )
 
-gapminder = px.data.gapminder()
-fig = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size="pop", color="continent",
-           hover_name="country", log_x=True, size_max=60)
+data_path = Path('../../data/project')
+X = pd.read_csv(data_path/'X_train_engineered.csv', index_col = 'Id')
+y = pd.read_csv(data_path/'y_train_engineered.csv', index_col = 'Id')
+my_data = pd.concat([X, y], axis=1)
+
+fig = px.scatter(my_data, x="TotalSF", y="SalePrice", color="OverallQual")
+
+#fig = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size="pop", color="continent",
+ #          hover_name="country", log_x=True, size_max=60)
+
+col_options = [dict(label=x, value=x) for x in my_data.columns]
+dimensions = ['x', 'y', 'color', 'facet_col', 'facet_row']
 
 column2 = dbc.Col(
     [
-        dcc.Graph(figure=fig),
+        html.Div(
+            [html.P([d + ':', dcc.Dropdown(id=d, options=col_options)]) for d in dimensions]
+        ),
+        dcc.Graph(id = 'graph',
+        figure=px.scatter(my_data))
     ]
 )
 
-layout = dbc.Row([column1, column2])
+@app.callback(Output('graph', 'figure'),
+              [Input(d, 'value') for d in dimensions])
+def cb(x, y, color, facet_col, facet_row):
+    return px.scatter(my_data, x = x, y = y, color = color, facet_col = facet_col, facet_row = facet_row)
+
+layout = dbc.Row([column1])

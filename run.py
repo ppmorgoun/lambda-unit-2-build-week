@@ -11,7 +11,7 @@ from pages import index, predictions, insights, process
 
 # Navbar docs: https://dash-bootstrap-components.opensource.faculty.ai/l/components/navbar
 navbar = dbc.NavbarSimple(
-    brand='YOUR APP NAME',
+    brand='Predicting Housing Prices in Ames, Iowa',
     brand_href='/', 
     children=[
         dbc.NavItem(dcc.Link('Predictions', href='/predictions', className='nav-link')), 
@@ -19,7 +19,7 @@ navbar = dbc.NavbarSimple(
         dbc.NavItem(dcc.Link('Process', href='/process', className='nav-link')), 
     ],
     sticky='top',
-    color='light', 
+    color='dark', 
     light=True, 
     dark=False
 )
@@ -35,14 +35,14 @@ footer = dbc.Container(
         dbc.Col(
             html.P(
                 [
-                    html.Span('Your Name', className='mr-2'), 
-                    html.A(html.I(className='fas fa-envelope-square mr-1'), href='mailto:<you>@<provider>.com'), 
-                    html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/<you>/<repo>'), 
-                    html.A(html.I(className='fab fa-linkedin mr-1'), href='https://www.linkedin.com/in/<you>/'), 
-                    html.A(html.I(className='fab fa-twitter-square mr-1'), href='https://twitter.com/<you>'), 
+                    html.Span('Petr Morgoun ', className='DSPT-11 mr-2'), 
+                    html.A(html.I(className='fas fa-envelope-square mr-1'), href='mailto:ppmorgoun@gmail.com'), 
+                    html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/ppmorgoun/lambda-unit-2-build-week'), 
+                    html.A(html.I(className='fab fa-linkedin mr-1'), href='https://www.linkedin.com/in/petr-morgoun-537101208/'), 
+                    html.A(html.I(className='fab fa-twitter-square mr-1'), href='https://twitter.com/MorgunPetr'), 
                 ], 
                 className='lead'
-            )
+            ) 
         )
     )
 )
@@ -53,7 +53,7 @@ footer = dbc.Container(
 # dbc.Container: https://dash-bootstrap-components.opensource.faculty.ai/l/components/layout
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False), 
-    navbar, 
+    navbar,
     dbc.Container(id='page-content', className='mt-4'), 
     html.Hr(), 
     footer
